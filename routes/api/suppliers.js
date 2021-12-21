@@ -29,7 +29,7 @@ router.get('/', verifyToken, (req, res) => {
 });
 
 router.post('/search/:business_unit_id', verifyToken, async (req, res) => {
-    console.log(`Get suppliers like: ${req.params["q"]}`);
+    console.log(`Get suppliers like: ${req.body.query}`);
 
     if (!req.params["business_unit_id"]) {
         return res.status(400).json({ message: "BusinessUnitId is needed for this request" })
@@ -72,7 +72,8 @@ router.get('/sites/:supplier_id/:business_unit', verifyToken, async (req, res) =
                 offset: 0
             }
         })
-        let sitesData = response.data.items.filter(item => item.ProcurementBU.toLowerCase() == req.params["business_unit"])
+        console.log(response.data.items);
+        let sitesData = response.data.items.filter(item => item.ProcurementBU.toLowerCase() == req.params["business_unit"].toLowerCase())
         return res.status(response.status).json({ data: sitesData, totalData: response.data.totalResults })
     } catch (error) {
         return res.status(error.response.status).json({ message: error.response.statusText })
