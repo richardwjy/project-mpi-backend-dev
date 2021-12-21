@@ -55,6 +55,7 @@ router.get('/:id', verifyToken, (req, res) => {
 
 router.post('/', verifyToken, async (req, res, next) => {
     try {
+        console.log("Validating Invoice object");
         const result = await invoiceSchema.validateAsync(req.body);
         // return res.json({ invoice: result });
     } catch (err) {
@@ -62,21 +63,22 @@ router.post('/', verifyToken, async (req, res, next) => {
         return res.json({ errMsg: err.details[0].message })
     }
     try {
-        // const result = await axios({
-        //     method: 'post',
-        //     url: getUrl("invoice"),
-        //     auth: {
-        //         username: req.user.username,
-        //         password: req.user.password
-        //     },
-        //     data: {
-        //         ...req.body
-        //     }
-        // })
-        return res.json({ message: "oke" })
+        console.log("Posting invoice to Oracle Fusion");
+        const result = await axios({
+            method: 'post',
+            url: getUrl("invoice"),
+            auth: {
+                username: req.user.username,
+                password: req.user.password
+            },
+            data: {
+                ...req.body
+            }
+        })
+        return res.json({ data: result.data });
     } catch (error) {
-        console.log(error)
-        return res.status(error.response.status).json({ message: error.response.statusTest })
+        console.log("Error Occured while")
+        return res.status(error.response.status).json({ message: error.response.data })
     }
 })
 
