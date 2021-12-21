@@ -74,7 +74,7 @@ router.get('/sites/:supplier_id/:business_unit', verifyToken, async (req, res) =
         })
         console.log(response.data.items);
         let sitesData = response.data.items.filter(item => item.ProcurementBU.toLowerCase() == req.params["business_unit"].toLowerCase())
-        return res.status(response.status).json({ data: sitesData, totalData: response.data.totalResults })
+        return res.status(response.status).json({ data: sitesData, totalData: sitesData.length })
     } catch (error) {
         return res.status(error.response.status).json({ message: error.response.statusText })
     }
