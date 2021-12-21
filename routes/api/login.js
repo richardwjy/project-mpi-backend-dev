@@ -21,8 +21,8 @@ router.post('/', (req, res) => {
         console.log("Logged in!")
         const token = jwt.sign({ _id: response.data.Resources[0].id, username, password }, process.env.TOKEN_SECRET)
 
-        // res.header('auth-token', token)
-        return res.status(response.status).json({ token, data: response.data.Resources })
+        res.header('Authorization', `Bearer ${token}`);
+        return res.status(response.status).json({ data: response.data.Resources })
     }).catch(error => {
         console.log(error.response.config.validateStatus())
         return res.status(error.response.status).json({ message: error.response.statusText })

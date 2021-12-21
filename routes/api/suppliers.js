@@ -28,15 +28,15 @@ router.get('/', verifyToken, (req, res) => {
     })
 });
 
-router.get('/search/:q', verifyToken, async (req, res) => {
+router.post('/search/:business_unit_id', verifyToken, async (req, res) => {
     console.log(`Get suppliers like: ${req.params["q"]}`);
 
-    if (!req.body.BusinessUnitId) {
+    if (!req.params["business_unit_id"]) {
         return res.status(400).json({ message: "BusinessUnitId is needed for this request" })
     }
 
-    query = req.params["q"] ? req.params["q"] : "%"
-    BusUnitId = req.body.BusinessUnitId
+    query = req.body.query ? req.body.query : "%"
+    BusUnitId = req.params["business_unit_id"]
     try {
         const result = await axios.get(getUrl() + `?q=SupplierName LIKE "${query}"&finder=FindByBillToBU;BillToBuId="${BusUnitId}"`, {
             auth: {

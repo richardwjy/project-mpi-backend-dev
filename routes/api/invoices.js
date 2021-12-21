@@ -6,13 +6,14 @@ const { invoiceSchema } = require('../../helpers/validationSchema')
 
 const getUrl = (type) => {
     if (type == "currency") return process.env.BASE_API + `/fscmRestApi/resources${process.env.API_VERSION}${process.env.CURRENCY_API}`;
+    if (type == "invoice") return process.env.BASE_API + `/fscmRestApi/resources${process.env.API_VERSION}${process.env.INVOICE_API}`;
 }
 
 router.get('/', verifyToken, (req, res) => {
     console.log('Get all invoices');
     // console.log(req.user.username)
     const { username, password } = req.user;
-    axios.get(process.env.BASE_API + `/fscmRestApi/resources/11.13.18.05/invoices`, {
+    axios.get(getUrl("invoice"), {
         auth: {
             username: username,
             password: password
@@ -43,7 +44,7 @@ router.get('/currency', verifyToken, async (req, res) => {
         })
         return res.status(response.status).json({ data: response.data.items, totalData: response.data.totalResults })
     } catch (error) {
-        return res.status(error.response.status).json({ message: error.resposne.statusText })
+        return res.status(error.response.status).json({ message: error.response.statusText })
     }
 })
 
@@ -54,11 +55,28 @@ router.get('/:id', verifyToken, (req, res) => {
 
 router.post('/', verifyToken, async (req, res, next) => {
     try {
-        const result = await invoiceSchema.validateAsync(req.body)
-        return res.json({ invoice: result })
+        const result = await invoiceSchema.validateAsync(req.body);
+        // return res.json({ invoice: result });
     } catch (err) {
         if (err.isJoi === true) err.status = 422
         return res.json({ errMsg: err.details[0].message })
+    }
+    try {
+        // const result = await axios({
+        //     method: 'post',
+        //     url: getUrl("invoice"),
+        //     auth: {
+        //         username: req.user.username,
+        //         password: req.user.password
+        //     },
+        //     data: {
+        //         ...req.body
+        //     }
+        // })
+        return res.json({ message: "oke" })
+    } catch (error) {
+        console.log(error)
+        return res.status(error.response.status).json({ message: error.response.statusTest })
     }
 })
 

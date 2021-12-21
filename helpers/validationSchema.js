@@ -14,8 +14,9 @@ const invoiceSchema = Joi.object({
     PaymentTerms: Joi.string().required(),
     TermsDate: Joi.date().required(),
     AccountingDate: Joi.date().required(),
-    LegalEntity: Joi.string().required(),
+    LegalEntity: Joi.string(),
+    LegalEntityIdentifier: Joi.string(),
     invoiceLines: Joi.array().required()
-})
+}).xor('LegalEntity', 'LegalEntityIdentifier')
 
 module.exports = { invoiceSchema }
