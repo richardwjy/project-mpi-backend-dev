@@ -79,7 +79,7 @@ router.post('/', verifyToken, async (req, res, next) => {
     } catch (error) {
         console.log("Error Occured while POST Invoice to Fusion")
         console.log(error.response.data)
-        return res.status(error.response.status).json({ message: error.response.data })
+        return res.status(error.response.status).json({ errMsg: error.response.data })
     }
 })
 
