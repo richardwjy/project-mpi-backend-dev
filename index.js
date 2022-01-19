@@ -7,8 +7,12 @@ const PORT = process.env.PORT || 5000
 
 dotenv.config()
 
+const corsOptions = {
+    allowedHeaders: ['Authorization']
+}
+
 app.use(express.json())
-app.use(cors())
+app.use(cors(corsOptions))
 
 // app.get('/', (req, res) => {
 //     res.send('Welcome to original page')
