@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5000
 dotenv.config()
 
 const corsOptions = {
-    allowedHeaders: ['Authorization']
+    exposedHeaders: ['Authorization']
 }
 
 app.use(express.json())

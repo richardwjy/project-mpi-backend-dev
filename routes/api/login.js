@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
         }
     }).then(response => {
         console.log("Logged in!")
-        const token = jwt.sign({ _id: response.data.Resources[0].id, username, password }, process.env.TOKEN_SECRET)
+        const token = jwt.sign({ _id: response.data.Resources[0].id, username, password }, process.env.TOKEN_SECRET, { expiresIn: "1h" })
 
         res.header('Authorization', `Bearer ${token}`);
         return res.status(response.status).json({ data: response.data.Resources })
